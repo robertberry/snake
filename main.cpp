@@ -9,6 +9,9 @@
 #include "SnakeRenderer.h"
 #include "Vector2i.h"
 
+constexpr int kFps = 60;
+constexpr int kMsPerFrame = 1000 / kFps;
+
 int main(int argc, char *argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
@@ -30,14 +33,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    constexpr int fps = 60;
-    constexpr int millis_per_frame = 1000 / fps;
-
     bool done = false;
     SDL_Event e;
 
     snake::GameState game_state = snake::GameState::Init();
-    snake::SnakeRenderer snake_renderer(*renderer, game_state);
+    const snake::SnakeRenderer snake_renderer(*renderer, game_state);
 
     while (!done) {
         const Uint32 frame_start = SDL_GetTicks();
@@ -70,8 +70,8 @@ int main(int argc, char *argv[]) {
         game_state.Tick();
         snake_renderer.Draw();
 
-        if (const Uint32 time_spent = SDL_GetTicks() - frame_start; time_spent < millis_per_frame) {
-            SDL_Delay(millis_per_frame - time_spent);
+        if (const Uint32 time_spent = SDL_GetTicks() - frame_start; time_spent < kMsPerFrame) {
+            SDL_Delay(kMsPerFrame - time_spent);
         }
     }
 

@@ -1,6 +1,7 @@
 #ifndef VECTOR2I_H
 #define VECTOR2I_H
 
+// A Vector of 2 integers.
 class Vector2i {
 
 public:
@@ -11,6 +12,7 @@ public:
 
     [[nodiscard]] int y() const { return y_; }
 
+    // Returns the negative of the vector. If the vector is a direction, this is the opposite direction.
     [[nodiscard]] Vector2i negative() const { return {-x_, -y_}; }
 
     bool operator==(const Vector2i& other) const {

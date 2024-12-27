@@ -7,10 +7,12 @@
 
 namespace snake {
 
+// Handles rendering the GameState to the SDL buffer.
 class SnakeRenderer {
   public:
     SnakeRenderer(SDL_Renderer& renderer, GameState& game_state) : renderer_(renderer), game_state_(game_state) {}
 
+    // Should be called every frame to update the screen.
     void Draw() const;
 
  private:
