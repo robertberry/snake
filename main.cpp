@@ -4,6 +4,7 @@
 #include <random>
 #include <string>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "constants.h"
 #include "SnakeRenderer.h"
@@ -15,6 +16,16 @@ constexpr int kMsPerFrame = 1000 / kFps;
 int main(int argc, char *argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    if (TTF_Init() != 0) {
+        std::cerr << "TTF_Init failed: " << TTF_GetError() << std::endl;
+        return 1;
+    }
+    TTF_Font* font = TTF_OpenFont("./resources/Silkscreen-Regular.ttf", /*ptsize=*/ 48);
+    if (font == nullptr) {
+        std::cerr << "TTF_OpenFont() failed: " << TTF_GetError() << std::endl;
         return 1;
     }
 
@@ -37,7 +48,7 @@ int main(int argc, char *argv[]) {
     SDL_Event e;
 
     snake::GameState game_state = snake::GameState::Init();
-    const snake::SnakeRenderer snake_renderer(*renderer, game_state);
+    const snake::SnakeRenderer snake_renderer(*renderer, game_state, *font);
 
     while (!done) {
         const Uint32 frame_start = SDL_GetTicks();

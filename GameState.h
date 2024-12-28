@@ -50,6 +50,7 @@ private:
   Vector2i direction_;
   bool is_growing_ = false;
   bool is_dead_ = false;
+  bool is_game_over_ = false;
 };
 
 }  // namespace snake

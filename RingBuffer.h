@@ -29,6 +29,14 @@ public:
         return true;
     }
 
+    bool pop_front() {
+        if (head_ == tail_) {
+            return false;
+        }
+        head_ = head_ == 0 ? N - 1 : head_ - 1;
+        return true;
+    }
+
     [[nodiscard]] bool empty() const {
         return head_ == tail_;
     }

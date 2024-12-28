@@ -11,7 +11,7 @@ namespace snake {
 
 GameState GameState::Init() {
     Snake snake;
-    constexpr Vector2i center = Vector2i(/*x=*/ COLUMNS / 2, /*y=*/ ROWS / 2);
+    constexpr auto center = Vector2i(/*x=*/ COLUMNS / 2, /*y=*/ ROWS / 2);
     snake.push_front(center);
     const Grid grid = MakeGrid();
     GameState state = {grid, snake, center};
@@ -97,9 +97,20 @@ void GameState::IncreaseMovementSpeed() {
 }
 
 void GameState::Tick() {
-    if (is_dead_) {
+    if (is_game_over_) {
+        return;
+    }
 
-    } else if (movement_timer_.Tick()) {
+    if (movement_timer_.Tick()) {
+        if (is_dead_ && !snake_.empty()) {
+            snake_.pop_front();
+            snake_.pop_back();
+            if (snake_.empty()) {
+                is_game_over_ = true;
+            }
+            return;
+        }
+
         // The snake can only turn to its left or right, not do a full 180 in a frame.
         if (requested_direction_ != direction_.negative()) {
             direction_ = requested_direction_;
